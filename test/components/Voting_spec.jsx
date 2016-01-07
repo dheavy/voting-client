@@ -1,6 +1,7 @@
 import React from 'react';
-import {findDOMNode} from 'react-dom';
+import {render, findDOMNode} from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
+import {List} from 'immutable';
 import Voting from '../../src/components/Voting';
 import {expect} from 'chai';
 
@@ -80,8 +81,23 @@ describe('Voting', () => {
     expect(firstButton.textContent).to.equal('Trainspotting');
 
     pair[0] = 'Sunshine';
-    component.render();
+    render(<Voting pair={pair} />, findDOMNode(component).parentNode);
     firstButton = scryRenderedDOMComponentsWithTag(component, 'button')[0];
     expect(firstButton.textContent).to.equal('Trainspotting');
+  });
+
+  it('does update DOM when prop changes', () => {
+    const pair = List.of('Trainspotting', '28 Days Later');
+    const component = renderIntoDocument(
+      <Voting pair={pair} />
+    );
+
+    let firstButton = scryRenderedDOMComponentsWithTag(component, 'button')[0];
+    expect(firstButton.textContent).to.equal('Trainspotting');
+
+    const newPair = pair.set(0, 'Sunshine');
+    render(<Voting pair={newPair} />, findDOMNode(component).parentNode);
+    firstButton = scryRenderedDOMComponentsWithTag(component, 'button')[0];
+    expect(firstButton.textContent).to.equal('Sunshine');
   });
 });
