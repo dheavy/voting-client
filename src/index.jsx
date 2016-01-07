@@ -7,8 +7,8 @@ import App from './components/App';
 ReactDOM.render(
   <Router>
     <Route history={browserHistory} component={App}>
-     <Route path="/" component={Voting} />
-   </Route>
+      <Route path="/" component={Voting} />
+    </Route>
   </Router>,
   document.getElementById('app')
 );
