@@ -1,1 +1,1 @@
-React/Redux full-stack voting app (client)
+# React/Redux full-stack voting app (client)
