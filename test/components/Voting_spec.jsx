@@ -1,4 +1,5 @@
 import React from 'react';
+import {findDOMNode} from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
 import Voting from '../../src/components/Voting';
 import {expect} from 'chai';
@@ -55,5 +56,17 @@ describe('Voting', () => {
     const buttons = scryRenderedDOMComponentsWithTag(component, 'button');
 
     expect(buttons[0].textContent).to.contain('Voted');
+  });
+
+  it('renders just the winner when there is one', () => {
+    const component = renderIntoDocument(
+      <Voting winner="Trainspotting" />
+    );
+    const buttons = scryRenderedDOMComponentsWithTag(component, 'button');
+    expect(buttons.length).to.equal(0);
+
+    const winner = findDOMNode(component.refs.winner);
+    expect(winner).to.be.ok;
+    expect(winner.textContent).to.contain('Trainspotting');
   });
 });
