@@ -1,9 +1,10 @@
 import {Router, Route, browserHistory} from 'react-router'
 import {ResultsContainer} from './components/Results';
 import {VotingContainer} from './components/Voting';
+import {createStore, compose} from 'redux';
 import {Provider} from 'react-redux';
 import App from './components/App';
-import {createStore, compose} from 'redux';
+import io from 'socket.io-client';
 import ReactDOM from 'react-dom';
 import reducer from './reducer';
 import React from 'react';
@@ -16,15 +17,8 @@ const finalCreateStore = compose(
 
 const store = finalCreateStore(reducer);
 
-store.dispatch({
-  type: 'SET_STATE',
-  state: {
-    vote: {
-      pair: ['Sunshine', '28 Days Later'],
-      tally: {Sunshine: 2}
-    }
-  }
-});
+const socket = io(`${location.protocol}//${location.hostname}:8090`);
+socket.on('state', state => store.dispatch({type: 'SET_STATE', state}));
 
 ReactDOM.render(
   <Provider store={store}>
