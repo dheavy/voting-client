@@ -1,5 +1,5 @@
 import ReactTestUtils from 'react-addons-test-utils';
-import Results from '../../src/components/Results';
+import {Results} from '../../src/components/Results';
 import {findDOMNode} from 'react-dom';
 import {List, Map} from 'immutable';
 import {expect} from 'chai';
