@@ -1,14 +1,21 @@
 import {Router, Route, browserHistory} from 'react-router'
+import {VotingContainer} from './components/Voting';
 import Results from './components/Results';
-import Voting from './components/Voting';
 import {Provider} from 'react-redux';
 import App from './components/App';
-import {createStore} from 'redux';
+import {createStore, compose} from 'redux';
 import ReactDOM from 'react-dom';
 import reducer from './reducer';
 import React from 'react';
 
-const store = createStore(reducer);
+const finalCreateStore = compose(
+  typeof window === 'object'
+  && typeof window.devToolsExtension !== 'undefined' ?
+  window.devToolsExtension() : f => f
+)(createStore);
+
+const store = finalCreateStore(reducer);
+
 store.dispatch({
   type: 'SET_STATE',
   state: {
@@ -17,14 +24,14 @@ store.dispatch({
       tally: {Sunshine: 2}
     }
   }
-})
+});
 
 ReactDOM.render(
   <Provider store={store}>
     <Router>
       <Route history={browserHistory} component={App}>
         <Route path="/results" component={Results} />
-        <Route path="/" component={Voting} />
+        <Route path="/" component={VotingContainer} />
       </Route>
     </Router>
   </Provider>,
